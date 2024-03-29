@@ -1,0 +1,122 @@
+
+openapi: 3.0.0
+info:
+  title: Daily Reporting API
+  version: 1.0.0
+paths:
+  /dailyReports:
+    get:
+      summary: Get all daily reports
+      responses:
+        '200':
+          description: A list of daily reports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DailyReport'
+        '500':
+          description: Internal server error
+    post:
+      summary: Create a new daily report
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DailyReport'
+      responses:
+        '201':
+          description: Daily report created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailyReport'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /dailyReports/{reportId}:
+    get:
+      summary: Get a specific daily report
+      parameters:
+        - name: reportId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A daily report
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailyReport'
+        '404':
+          description: Report not found
+        '500':
+          description: Internal server error
+    put:
+      summary: Update a specific daily report
+      parameters:
+        - name: reportId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DailyReport'
+      responses:
+        '200':
+          description: Daily report updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailyReport'
+        '400':
+          description: Bad request
+        '404':
+          description: Report not found
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete a specific daily report
+      parameters:
+        - name: reportId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Daily report deleted
+        '404':
+          description: Report not found
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    DailyReport:
+      type: object
+      properties:
+        reportId:
+          type: string
+        date:
+          type: string
+          format: date
+        activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Activity'
+    Activity:
+      type: object
+      properties:
+        activityId:
+          type: string
+        description:
+          type: string
